@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "Courses | Omnivoy" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbolinks-track": "reload" %>
+  </head>
+
+  <body class="course-layout">
+    <div class="app-container">
+      <header class="main-header">
+        <div class="logo">
+          <%= link_to root_path do %>
+            <h1>Omnivoy</h1>
+          <% end %>
+        </div>
+        
+        <nav class="main-nav">
+          <ul>
+            <li><%= link_to "Dashboard", dashboard_path %></li>
+            <li class="active"><%= link_to "Courses", courses_path %></li>
+            <li><%= link_to "Tasks", tasks_path %></li>
+            <li><%= link_to "Calendar", calendar_path %></li>
+          </ul>
+        </nav>
+        
+        <div class="user-menu">
+          <% if current_user %>
+            <div class="dropdown">
+              <button class="dropdown-toggle">
+                <%= current_user.name %>
+                <i class="dropdown-icon"></i>
+              </button>
+              <div class="dropdown-menu">
+                <%= link_to "Profile", profile_path %>
+                <%= link_to "Settings", settings_path %>
+                <%= link_to "Sign out", logout_path, method: :delete %>
+              </div>
+            </div>
+          <% else %>
+            <%= link_to "Sign in", login_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </header>
+
+      <% if content_for?(:course_header) %>
+        <div class="course-header">
+          <%= yield :course_header %>
+        </div>
+      <% end %>
+
+      <div class="content-wrapper">
+        <% if @course && !@hide_sidebar %>
+          <aside class="course-sidebar">
+            <div class="course-info">
+              <h3><%= @course.name %></h3>
+              <% if @course.current_grade.present? %>
+                <div class="grade-indicator">
+                  <span class="label">Current Grade:</span>
+                  <span class="grade <%= grade_color_class(@course.current_grade) %>">
+                    <%= number_to_percentage(@course.current_grade, precision: 1) %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+            
+            <nav class="course-nav">
+              <ul>
+                <li><%= link_to "Overview", course_path(@course) %></li>
+                <li><%= link_to "Assignments", course_tasks_path(@course) %></li>
+                <li><%= link_to "Grades", course_grades_path(@course) %></li>
+                <li><%= link_to "Files", course_files_path(@course) %></li>
+              </ul>
+            </nav>
+            
+            <div class="upcoming-deadlines">
+              <h4>Upcoming Deadlines</h4>
+              <% if @course.upcoming_deadlines.any? %>
+                <ul class="deadlines-list">
+                  <% @course.upcoming_deadlines.each do |task| %>
+                    <li>
+                      <%= link_to task.title, course_task_path(@course, task) %>
+                      <span class="due-date"><%= time_ago_in_words(task.due_date) %> left</span>
+                    </li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <p class="no-deadlines">No upcoming deadlines</p>
+              <% end %>
+            </div>
+          </aside>
+        <% end %>
+        
+        <main class="main-content <%= @course && !@hide_sidebar ? 'with-sidebar' : '' %>">
+          <% if flash.any? %>
+            <div class="flash-messages">
+              <% flash.each do |key, value| %>
+                <div class="alert alert-<%= key %>">
+                  <%= value %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          
+          <%= yield %>
+        </main>
+      </div>
+      
+      <footer class="main-footer">
+        <p>&copy; <%= Date.today.year %> Omnivoy - Academic Task Prioritization</p>
+      </footer>
+    </div>
+  </body>
+</html>

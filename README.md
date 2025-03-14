@@ -2,7 +2,6 @@
 
 ## **Project Name: Omnivoy**
 
-### **Scope Definition Statement**
 
 **Team Members:**
 - Absaar Ajaz
@@ -10,7 +9,7 @@
 - Maria Valdes
 - Nathaniel Navarro
 
-**Date:** February 26, 2025
+
 
 ---
 

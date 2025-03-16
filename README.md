@@ -15,7 +15,7 @@
 
 ### **Justification**
 
-Omnivoy is designed to help students efficiently manage their academic tasks by integrating with the Canvas Learning Management System (LMS). It aims to reduce the stress students face when juggling assignments and deadlines, enabling them to focus more on understanding course materials
+Omnivoy is designed to help students efficiently manage their academic tasks by integrating with the Canvas Learning Management System (LMS). It aims to reduce the stress students face when juggling assignments and deadlines, enabling them to focus more on understanding course materials.
 
 ---
 

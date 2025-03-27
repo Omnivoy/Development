@@ -1,0 +1,12 @@
+<h1>Assignments</h1>
+<ul>
+  <% @assignments.each do |assignment| %>
+    <li>
+      <strong><%= link_to assignment.title, assignment %></strong>
+      <br>
+      Due: <%= assignment.due_date %>
+      <br>
+      <%= assignment.course %>
+    </li>
+  <% end %>
+</ul>

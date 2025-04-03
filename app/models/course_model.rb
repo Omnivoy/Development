@@ -1,7 +1,3 @@
-Course Model for Omnivoy
-
-# app/models/course.rb
-
 class Course < ApplicationRecord
   # Associations
   belongs_to :user
@@ -11,10 +7,19 @@ class Course < ApplicationRecord
   validates :name, presence: true
   validates :canvas_course_id, presence: true, uniqueness: { scope: :user_id }
   
+  # Add missing validations for important attributes
+  validates :code, presence: true
+  validates :start_date, presence: true
+  validates :end_date, presence: true
+  
   # Scopes
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
   scope :current_term, -> { where(current_term: true) }
+  # Additional useful scopes
+  scope :ordered_by_name, -> { order(name: :asc) }
+  scope :ordered_by_end_date, -> { order(end_date: :asc) }
+  scope :ending_soon, -> { active.where('end_date <= ?', Date.today + 14.days) }
   
   # Calculate the current grade for this course based on completed assignments
   def calculate_current_grade
@@ -75,6 +80,30 @@ class Course < ApplicationRecord
     assignments.each do |canvas_assignment|
       Task.sync_from_canvas(user, canvas_assignment)
     end
+  end
+  
+  # Add method to get overall course progress
+  def progress_percentage
+    return 0 if tasks.count.zero?
+    
+    (tasks.completed.count.to_f / tasks.count * 100).round(1)
+  end
+  
+  # Method to check if course has any overdue tasks
+  def has_overdue_tasks?
+    tasks.overdue.exists?
+  end
+  
+  # Method to get course summary stats
+  def summary
+    {
+      total_tasks: tasks.count,
+      completed_tasks: tasks.completed.count,
+      remaining_tasks: remaining_tasks_count,
+      current_grade: current_grade,
+      overdue_count: tasks.overdue.count,
+      progress: progress_percentage
+    }
   end
   
   private

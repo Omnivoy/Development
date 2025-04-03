@@ -1,0 +1,21 @@
+class AddFieldsToCourses < ActiveRecord::Migration[7.0]
+  def change
+    # If these columns don't already exist in your schema:
+    
+    # Add columns for course metadata if they don't exist
+    add_column :courses, :code, :string, unless_exists: true
+    add_column :courses, :start_date, :datetime, unless_exists: true
+    add_column :courses, :end_date, :datetime, unless_exists: true
+    add_column :courses, :url, :string, unless_exists: true
+    add_column :courses, :active, :boolean, default: true, unless_exists: true
+    add_column :courses, :current_term, :boolean, default: false, unless_exists: true
+    add_column :courses, :canvas_course_id, :string, unless_exists: true
+    add_column :courses, :current_grade, :decimal, precision: 5, scale: 2, unless_exists: true
+    
+    # Add indexes for performance
+    add_index :courses, :canvas_course_id, unless_exists: true
+    add_index :courses, [:user_id, :canvas_course_id], unique: true, unless_exists: true
+    add_index :courses, :current_term, unless_exists: true
+    add_index :courses, :active, unless_exists: true
+  end
+end

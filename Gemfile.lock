@@ -83,7 +83,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
-    brakeman (7.0.0)
+    brakeman (7.0.1)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -350,6 +350,9 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
+  rubocop
+  rubocop-performance
+  rubocop-rails
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable

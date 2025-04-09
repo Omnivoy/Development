@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get "assignments/index"
   get "assignments/show"
   resources :users
+  get '/new/user', to: 'new#user'
   resources :assignments, only: [:index, :show]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'pages#homepage'
   get "assignments/index"
   get "assignments/show"
   resources :users

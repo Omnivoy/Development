@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :users
   get '/new/user', to: 'new#user'
   resources :assignments, only: [:index, :show]
+
+  get 'help', to: 'pages#help'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

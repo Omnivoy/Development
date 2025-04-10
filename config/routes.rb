@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   get '/new/user', to: 'new#user'
   resources :assignments, only: [:index, :show]
 
-  get 'help', to: 'pages#help'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get 'help', to: 'pages#help'
   get 'about', to: 'pages#about'
